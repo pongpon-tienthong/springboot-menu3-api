@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+
+  menu3-db:
+    container_name: menu3-db
+    image: mysql:latest
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=ROOT
+      - MYSQL_DATABASE=MENU3
+      - MYSQL_PASSWORD=ROOT
+
+  menu3-api:
+    container_name: menu3-api
+    image: menu3/api
+    depends_on:
+      - menu3-db
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_HOST=menu3-db
+      - DATABASE_USER=ROOT
+      - DATABASE_PASSWORD=ROOT
+      - DATABASE_NAME=MENU3
+      - DATABASE_PORT=3306

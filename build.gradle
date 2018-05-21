@@ -1,0 +1,49 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.19.2")
+    }
+}
+
+plugins {
+    id 'com.palantir.docker' version '0.19.2'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'menu3'
+version = '1.0.0'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    runtime('com.h2database:h2')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+bootJar {
+    baseName = 'api'
+    version =  '1.0.0'
+}
+
+docker {
+    dependsOn build
+    name "${project.group}/${bootJar.baseName}"
+    files bootJar.archivePath
+    buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+}
