@@ -1,0 +1,11 @@
+spring:
+    jpa:
+        hibernate:
+            ddl-auto: create # TODO: Change this configuration soon
+
+    datasource:
+#        url: jdbc:mysql://localhost:3306/MENU3 # Enable this IF Prefer not to run on Docker
+        url: jdbc:mysql://menu3-db:3306/menu3
+        username: root
+        password: root
+        driver-class-name: com.mysql.jdbc.Driver
